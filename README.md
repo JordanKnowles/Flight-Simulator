@@ -1,7 +1,6 @@
 # Flight-Simulator
 Forecasting the Training Hours at Mach 1
 1. What are you forecasting and why?
-
 ** ANS: Forecast the demand hours for pilot training at Mach 1 Training Solutions to create a tool management may use in decision making for training device and instructor resource allocation to meet future demand.**
 
 2. Be specific on your forecast. Point, Range, Short, Medium, Long,
