@@ -14,3 +14,7 @@ Forecasting the Training Hours at Mach 1
 5. Describe your data, where you got it, how you got it, is there a way others can do the same.
 **ANS:  This is historical data from a pilot training company’s instructor and simulator utilization.  Information is maintained for internal use and employees of the business can obtain the same information through their enterprise analytics dashboard.
 **
+
+https://github.com/EJdata
+
+https://github.com/PrachiG93
