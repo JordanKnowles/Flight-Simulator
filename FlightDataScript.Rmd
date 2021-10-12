@@ -1,0 +1,262 @@
+---
+title: "R Notebook"
+output:
+  pdf_document: default
+  html_notebook: default
+  html_document:
+    df_print: paged
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+library(ggplot2)
+```{r}
+library(TTR)
+library(fpp2)
+library(fpp)
+library(ggplot2)
+```
+
+```{r}
+str(FlightData)
+```
+
+```{r}
+names(FlightData)[2] = "Date"
+```
+
+View(FlightData)
+
+```{r}
+FD4 = subset(FlightData, select = c(Year, Month, Device_Hrs))
+```
+
+```{r}
+FD2 = subset(FlightData, select = c(Date, Device_Hrs))
+```
+
+```{r}
+plot(FD2)
+```
+
+## Cleaner Plot
+```{r}
+plot(FD2, xlab="Date", ylab="Flight Hours")
+```
+
+```{r}
+library(fpp)
+library(fpp2)
+library(TTR)
+```
+
+```{r}
+FDts = ts(FD2$Device_Hrs,frequency=12, start = c(2015,1))
+```
+
+```{r}
+?ts
+```
+
+
+```{r}
+plot(FDts)
+```
+
+
+## ACF Autocorrelation of the data
+
+```{r}
+Acf(FDts, lag.max = 80)
+```
+
+
+```{r}
+fit= stl(FDts, s.window = 5)
+```
+plot(fit)
+```{r}
+plot(fit)
+```
+
+```{r}
+class(fit)
+```
+
+## 3 Period Forecast
+```{r}
+FDfore3 = forecast(fit, h=3)
+```
+```{r}
+plot(FDfore3)
+```
+
+Accuracy of Forecast
+```{r}
+accuracy(FDfore3)
+```
+
+## Naive Forecast, 5 periods
+```{r}
+naive_forecast <- naive(FDts,5)
+plot(naive_forecast)
+```
+## lets try Random Walk
+
+```{r}
+rwf_forecast <- rwf(FDts,5)
+plot(rwf_forecast)
+```
+
+## Seasonal Naive Forecast
+```{r}
+snaive_forecast <- snaive(FDts,12)
+plot(snaive_forecast)
+```
+```{r}
+accuracy(snaive_forecast)
+```
+?accuracy
+#take Mean of all available history
+
+```{r}
+mean_forecast <- meanf(FDts,5) # 5 is the forecasting period (5 quarters out)
+plot(mean_forecast)
+```
+```{r}
+accuracy(mean_forecast)
+```
+
+```{r}
+plot(mean_forecast)
+lines(naive_forecast$mean,col="red")
+```
+
+```{r}
+attributes(naive_forecast)
+```
+```{r}
+attributes(rwf_forecast)
+```
+```{r}
+plot(snaive_forecast)
+lines(rwf_forecast$mean,col="green")
+lines(snaive_forecast$mean,col="Red")
+lines(snaive_forecast$fitted, col = "Purple")
+lines(naive_forecast$mean,col="Gold")
+
+```
+
+# ERROR
+```{r}
+plot(snaive_forecast)
+lines(rwf_forecast$mean,col="green")
+lines(snaive_forecast$mean,col="purple")
+lines(naive_forecast$mean,col="red")
+```
+# ERROR
+```{r}
+## Show the forecasts overlayed over the actual data
+lines(snaive_forecast$fitted,col="yellow")
+```
+
+```{r}
+rwf_forecast <- rwf(FDts,5, drift=TRUE)
+plot(rwf_forecast)
+lines(rwf_forecast$mean,col="green")
+```
+ETS Function
+```{r}
+ets(FDts)
+
+ets_forecast = ets(FDts)
+```
+
+```{r}
+hw_forecast_level = HoltWinters(FDts, gamma=FALSE)
+hw_forecast_level
+```
+```{r}
+hw_forecast_level2 = HoltWinters(FDts)
+hw_forecast_level2
+```
+```{r}
+HoltWinters(FDts,beta=FALSE,gamma=FALSE)
+SSE_Simple <- HoltWinters(FDts,beta=FALSE,gamma=FALSE)
+attributes(SSE_Simple)
+plot(SSE_Simple)
+SSE_Simple$SSE
+SSE_Simple$fitted
+```
+
+
+```{r}
+SSE_Simple <- HoltWinters(FDts,beta=FALSE,gamma=FALSE)
+attributes(SSE_Simple)
+```
+
+```{r}
+plot(SSE_Simple)
+```
+```{r}
+plot(SSE_Simple)
+SSE_Simple$SSE
+SSE_Simple$fitted
+```
+## SSE With Trend
+```{r}
+SSE_Trend <- HoltWinters(FDts,gamma=FALSE)
+plot(SSE_Trend)
+SSE_Trend
+attributes(SSE_Trend)
+SSE_Trend$SSE # check the residual error magnitude
+```
+
+```{r}
+# now Holts Winters
+SSE_Winters <- HoltWinters(FDts)
+SSE_Winters$SSE
+plot(SSE_Winters)
+```
+
+
+```{r}
+# lets play with ETS
+ets(FDts)
+ets_forecast <- ets(FDts)
+attributes(ets)
+attributes(ets_forecast)
+ets_forecast$mse
+```
+
+```{r}
+# how do we forecast now!!
+forecast.ets(ets_forecast, h=5)
+forecast_ets <- forecast.ets(ets_forecast, h=5)
+plot(forecast_ets)
+```
+
+# ERROR
+```{r}
+SAts = seasadj(FDts)
+```
+
+```{r}
+# forecast with ets
+forecast.ets(ets_forecast, h=5)
+forecast_ets <- forecast.ets(ets_forecast, h=5)
+plot(forecast_ets)
+lines(forecast_ets$fitted, col = "Purple")
+accuracy(forecast_ets)
+
+```
+ 
+ 
