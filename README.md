@@ -1,13 +1,12 @@
 # Flight-Simulator
 Forecasting the Training Hours at Mach 1
-1. What are you forecasting and why?
-** ANS: Forecast the demand hours for pilot training at Mach 1 Training Solutions to create a tool management may use in decision making for training device and instructor resource allocation to meet future demand.**
+Forecast the demand hours for pilot training at Mach 1 Training Solutions.  We want to anticipate the resources needed to properly train all pilots.  This will help anticipate organizational growth and ensure that resources are allocated properly
 
 2. Be specific on your forecast. Point, Range, Short, Medium, Long,
-**ANS: Determine the flight simulator and instructor hours for the months and quarters of year 2022.  Short and Medium Range forecasting.**
+**ANS: Determine the flight simulator and instructor hours for the months and quarters for 2019 and 2020.  We want to see if the model is appropriate for forecasting the demand of instruction.  We are utilizing multiple regression analysis to see if there are any independent variables that influence the demand for flight training.
 
 3. How will your measure the accuracy of the forecast
-**Ans: Measured by residual error (model forecast output against the historical data), P-Value, ACF**
+**Ans: We will measure the accuracy of the forecasts using various metrics such as MSE, MAPE, and RMSE.  We will analyze the residuals of our model to ensure that we are capturing all meaningful factors in the analysis.
 
 4. Your data set. It should have a time component, a column on what you are forecasting at a minimum. You can have more columns as well.
 
